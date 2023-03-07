@@ -8,6 +8,4 @@ import ru.bibliophile.domain.model.User
 data class AuthResponse(
     val user: User,
     val token: Token
-) {
-
-}
+)

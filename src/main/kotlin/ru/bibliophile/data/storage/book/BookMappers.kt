@@ -7,8 +7,8 @@ fun BookEntity.asBook() = Book(
     id.value,
     ownerId.value,
     title,
-    imageUrl,
     description,
+    imageUrl,
     genre,
     author,
 )

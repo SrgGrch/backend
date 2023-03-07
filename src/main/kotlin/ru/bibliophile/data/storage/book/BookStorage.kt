@@ -5,6 +5,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import ru.bibliophile.data.entity.BookEntity
 import ru.bibliophile.data.table.BooksTable
 import ru.bibliophile.data.table.UsersTable
+import ru.bibliophile.domain.model.Book
 import ru.bibliophile.domain.model.Genre
 
 class BookStorage {
@@ -26,9 +27,23 @@ class BookStorage {
         }.asBook()
     }
 
-    fun findBooksEntityByOwnerId(ownerId: Int) = transaction {
+    fun findBooksByOwnerId(ownerId: Int) = transaction {
         BookEntity.find {
             BooksTable.ownerId eq ownerId
         }.map { it.asBook() }.toList()
+    }
+
+    fun findBooksByTitle(title: String): List<Book> = transaction {
+        BookEntity.find {
+            BooksTable.title like "%$title%"
+        }.map { it.asBook() }.toList()
+    }
+
+    fun getAllBooks(): List<Book> = transaction {
+        BookEntity.all().map { it.asBook() }.toList()
+    }
+
+    fun findBookById(id: Int): Book? = transaction {
+        BookEntity.findById(id)?.asBook()
     }
 }

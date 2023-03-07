@@ -60,10 +60,15 @@ fun Routing.accountRoutes(
 
     get("$route/{login}") {
         val login = call.parameters["login"]!!
+        val id = login.toIntOrNull()
 
-        getUserUseCase.execute(GetUserUseCase.Input(login))?.let { user ->
+        val user = if (id == null) {
+            getUserUseCase.execute(GetUserUseCase.Input.Login(login))
+        } else getUserUseCase.execute(GetUserUseCase.Input.Id(id))
+
+        user?.let {
             call.respond(
-                user
+                it
             )
         } ?: call.respond(HttpStatusCode.NotFound)
     }

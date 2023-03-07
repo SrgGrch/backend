@@ -8,8 +8,14 @@ class GetUserUseCase(
     private val userRepository: UserRepository
 ) : ParamsUseCase<GetUserUseCase.Input, User?>() {
     override suspend fun run(params: Input): User? {
-        return userRepository.getUser(params.login)
+        return when (params) {
+            is Input.Id -> userRepository.getUser(params.id)
+            is Input.Login -> userRepository.getUser(params.login)
+        }
     }
 
-    data class Input(val login: String)
+    sealed interface Input {
+        data class Login(val login: String) : Input
+        data class Id(val id: Int) : Input
+    }
 }

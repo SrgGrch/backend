@@ -26,7 +26,7 @@ class UserRepositoryImpl(
         return userStorage.findUserByLogin(login)?.let {
             UserRepository.UserWithBooks(
                 it,
-                bookStorage.findBooksEntityByOwnerId(it.id)
+                bookStorage.findBooksByOwnerId(it.id)
             )
         }
     }
@@ -35,7 +35,7 @@ class UserRepositoryImpl(
         return userStorage.findUserById(id)?.let {
             UserRepository.UserWithBooks(
                 it,
-                bookStorage.findBooksEntityByOwnerId(id)
+                bookStorage.findBooksByOwnerId(id)
             )
         }
     }
